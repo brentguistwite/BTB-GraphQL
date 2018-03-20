@@ -1,0 +1,23 @@
+type User {
+  id: ID!
+  username: String!
+  password: String!
+  firstName: String
+  lastName: String
+}
+
+# Query/Mutation root level. Always needed.
+# ! is equiv to required
+type Query {
+  user(id:ID!): User
+  allUsers(username:String): [User]!
+}
+
+type Mutation {
+  createUser(
+    username: String!,
+    password: String!,
+    firstName: String,
+    lastName: String,
+  ): ID!
+}
