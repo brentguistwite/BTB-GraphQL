@@ -1,16 +1,14 @@
 {
-  "name": "thinkful-backend-template",
+  "name": "graphql-server",
   "version": "1.0.0",
-  "description": "Template for an Express backend",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "nodemon ./graphql/server.js --exec babel-node",
     "test": "mocha --colors --exit  test/setup.test.js */*.test.js",
     "cover": "nodemon --exec nyc --reporter=lcov --reporter=text-summary mocha test/setup.test.js */*.test.js",
     "heroku": "node server.js",
     "travis": "mocha test/setup.test.js */*.test.js"
   },
-  "author": "Joe Turner <jturner@thinkful.com>",
   "license": "MIT",
   "dependencies": {
     "apollo-server-express": "^1.3.2",
@@ -24,6 +22,7 @@
     "graphql-tools": "^2.23.1",
     "mongoose": "^5.0.6",
     "morgan": "^1.8.2",
+    "node-fetch": "^2.1.1",
     "passport": "^0.4.0",
     "passport-jwt": "^3.0.1",
     "passport-local": "^1.0.0",
@@ -34,6 +33,13 @@
     "chai-http": "^3.0.0",
     "mocha": "^3.5.3",
     "nodemon": "^1.12.1",
-    "nyc": "^11.2.1"
+    "nyc": "^11.2.1",
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1"
+  },
+  "babel": {
+    "presets": [
+      "env"
+    ]
   }
 }
