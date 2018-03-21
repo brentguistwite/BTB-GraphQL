@@ -1,23 +1,27 @@
+const db= {};
 const resolvers = {
   Query: {
-    author(root, args) {
-      return { id: 1, firstName: 'Hello', lastName: 'World', };
+    user: (parent, args, context, info) => {
+      return db.Users[args.id];
     },
-    allAuthors() {
-      return [ { id: 1, firstName: 'Hello', lastName: 'World', } ,];
+    allUsers: (parent, args, context, info) => {
+      // ES6 obj to arr
+      // Return Object.values(db.Users);
+      // Array of objs
+      // Filter where username = args
+      return Object.values(db.Users).filter((user) => {
+        // Users passes empty string
+        if (!args.username ) {
+          return true;
+        }
+        return user.username === args.username;
+      });
     },
   },
-  Author: {
-    posts(author) {
-      return [
-        { id: 1, title: 'A post', text: 'Some text', views: 2, },
-        { id: 2, title: 'Another post', text: 'Some other text', views: 200, },
-      ];
-    },
-  },
-  Post: {
-    author(post) {
-      return { id: 1, firstName: 'Hello', lastName: 'World', };
+  // Npm uuid
+  Mutation: {
+    createUser: (parent, args, context, info) => {
+      // Db.Users
     },
   },
 };
