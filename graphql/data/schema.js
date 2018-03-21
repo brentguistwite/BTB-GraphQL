@@ -5,7 +5,7 @@ import resolvers from './resolvers';
 const typeDefs = `
 type Query {
   author(firstName: String, lastName: String): Author
-  allAuthors: [Author]
+  allAuthors: [Author] @authenticated
   getFortuneCookie: String # we'll use this later
 }
 type Author {
