@@ -5,20 +5,12 @@ import resolvers from './resolvers';
 
 const typeDefs = `
 
-type QuestionData {
-  question: String!
-  answer: String!
-  category: String!
-  timesSeen: Int
-  timesCorrect: Int
-}
-
 type User {
   username: String!
   password: String!
   firstName: String!
   lastName: String!
-  questions: QuestionData
+  questions: JSON
 }
 
 type Query {

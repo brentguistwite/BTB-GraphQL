@@ -10,8 +10,7 @@ import { GRAPHQL_PORT, CLIENT_ORIGIN, } from'./config';
 import { dbConnect, } from './db/db-mongoose';
 
 mongoose.Promise = global.Promise;
-
-const app = express();
+export const app = express();
 
 app.use(
   morgan(
@@ -34,6 +33,7 @@ app.use(
     { schema, }
   )
 );
+
 app.use(
   '/graphiql',
   graphiqlExpress(
@@ -49,4 +49,5 @@ dbConnect()
       )
     );
   });
+
 
