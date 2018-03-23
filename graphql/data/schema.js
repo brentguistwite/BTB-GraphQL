@@ -1,5 +1,4 @@
 import { makeExecutableSchema, } from 'graphql-tools';
-
 import resolvers from './resolvers';
 // Query/Mutation root level. Always needed. !is equiv to required
 
@@ -12,6 +11,8 @@ type User {
   lastName: String!
   questions: String!
 }
+
+scalar JSON 
 
 type Query {
   user(

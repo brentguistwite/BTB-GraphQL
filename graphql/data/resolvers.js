@@ -1,11 +1,14 @@
 import { User, } from './../db/user-model';
 import mongoose from 'mongoose';
+import GraphQLJSON from 'graphql-type-json';
 import LinkedList from './../../algorithm/linked-list';
 import data from './../../questions/questions'
 mongoose.Promise = global.Promise;
 
 const resolvers = {
+  JSON: GraphQLJSON,
   Query: {
+    // Grab question data for next question up
     user: async (parent, args, context, info) => {
       try {
         // const userData = await User.findById(args.id);
@@ -31,6 +34,10 @@ const resolvers = {
     },
   },
   Mutation: {
+    updateQuestionOrder: async (parent, args, context, info) => {
+
+    }
+    ,
     createUser: async (parent, args, context, info) => {
 
       // Our base set of questions/answers with default values
