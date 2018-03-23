@@ -9,7 +9,7 @@ type User {
   password: String!
   firstName: String!
   lastName: String!
-  questions: String!
+  questions: JSON!
 }
 
 scalar JSON 
@@ -26,10 +26,11 @@ type Query {
 
 type Mutation {
   createUser(
-    username: String!,
-    password: String!,
-    firstName: String!,
-    lastName: String!,
+    username: String!
+    password: String!
+    firstName: String!
+    lastName: String!
+    questions: JSON
   ): User
 }
 `;

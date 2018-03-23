@@ -11,11 +11,6 @@ const resolvers = {
     // Grab question data for next question up
     user: async (parent, args, context, info) => {
       try {
-        // const userData = await User.findById(args.id);
-        // console.log("USERDATA",userData)
-        // const parsedQuestions = JSON.parse(userData.questions);
-        // console.log(parsedQuestions.head.value);
-        // return parsedQuestions;
         return await User.findById(args.id);
       }
 
@@ -34,10 +29,10 @@ const resolvers = {
     },
   },
   Mutation: {
-    updateQuestionOrder: async (parent, args, context, info) => {
+    // updateQuestionOrder: async (parent, args, context, info) => {
 
-    }
-    ,
+    // }
+    // ,
     createUser: async (parent, args, context, info) => {
 
       // Our base set of questions/answers with default values
@@ -54,18 +49,10 @@ const resolvers = {
           message: 'Cannot start or end with whitespace',
         }); 
       }
+      // Bcrypt truncates after 72 character
+      let wrongPasswordSize = args.password.length <= 8 && args.password.length >= 72;
+      let wrongUsernameSize = args.username.length <= 1 && args.username.length >= 15;
 
-      let wrongUsernameSize = true;
-      let wrongPasswordSize = true;
-
-      // Bcrypt truncates after 72 characters
-      if (args.password.length >= 8 && args.password.length <= 72) {
-        wrongPasswordSize = false;
-      } 
-
-      if (args.username.length >= 1 && args.username.length <= 15) {
-        wrongUsernameSize = false;
-      }
 
       if (wrongUsernameSize || wrongPasswordSize) {
         throw new Error({
@@ -92,8 +79,9 @@ const resolvers = {
           password: hashedPassword,
           firstName: args.firstName,
           lastName: args.lastName,
-          questions: JSON.stringify(baseList),
+          questions: baseList,
         });
+        // Private directives
         return newUser.serialize();
       }
 
