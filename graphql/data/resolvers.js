@@ -36,6 +36,8 @@ const resolvers = {
 
       let wrongUsernameSize = true;
       let wrongPasswordSize = true;
+      
+      // Bcrypt truncates after 72 characters
       if (args.password.length >= 8 && args.password.length <= 72) {
         wrongPasswordSize = false;
       } 
@@ -51,6 +53,7 @@ const resolvers = {
         });
       }
 
+      // Check to see if username already exists in database
       try {
         const doesUserExist = await User
         .find({ username:args.username, })
@@ -61,7 +64,7 @@ const resolvers = {
             message: 'Username already exists',
           });
         }
-        const hashedPassword = await User.hashPassword();
+        const hashedPassword = await User.hashPassword(args.password);
         console.log(hashedPassword)
         return await User.create({
           username: args.username,
@@ -69,8 +72,7 @@ const resolvers = {
           firstName: args.firstName,
           lastName: args.lastName,
           questions: JSON.stringify(baseList),
-        }).serialize();
-
+        });
       }
       catch(e) {
         console.log(e);
