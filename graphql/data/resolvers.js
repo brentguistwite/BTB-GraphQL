@@ -27,6 +27,7 @@ const resolvers = {
       const usernameIsNotTrimmed = args.username !== args.username.trim();
       const passwordIsNotTrimmed = args.password !== args.password.trim();
 
+      // Silently trimming fields could result in user confusion when attempting to log in.
       if (usernameIsNotTrimmed || passwordIsNotTrimmed) {
         throw new Error({
           reason: 'ValidationError',
@@ -36,7 +37,7 @@ const resolvers = {
 
       let wrongUsernameSize = true;
       let wrongPasswordSize = true;
-      
+
       // Bcrypt truncates after 72 characters
       if (args.password.length >= 8 && args.password.length <= 72) {
         wrongPasswordSize = false;
@@ -64,8 +65,8 @@ const resolvers = {
             message: 'Username already exists',
           });
         }
+
         const hashedPassword = await User.hashPassword(args.password);
-        console.log(hashedPassword)
         return await User.create({
           username: args.username,
           password: hashedPassword,
@@ -74,10 +75,10 @@ const resolvers = {
           questions: JSON.stringify(baseList),
         });
       }
-      catch(e) {
-        console.log(e);
-      }
 
+      catch(e) {
+        console.error(e);
+      }
     }
   }
 };
