@@ -1,4 +1,3 @@
-import dotenv from 'dotenv';
 import express from 'express';
 import { graphqlExpress, graphiqlExpress, } from 'apollo-server-express';
 import bodyParser from 'body-parser';
@@ -29,9 +28,12 @@ app.use(
 app.use(
   '/graphql',
   bodyParser.json(),
-  graphqlExpress(
-    { schema, }
-  )
+  graphqlExpress((req) => {
+    return {
+      schema,
+      context: {value: req.body,},
+    };
+  })
 );
 
 app.use(

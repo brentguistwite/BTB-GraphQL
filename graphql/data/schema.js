@@ -10,7 +10,7 @@ type User {
   password: String!
   firstName: String!
   lastName: String!
-  questions: JSON
+  questions: String!
 }
 
 type Query {
@@ -27,9 +27,9 @@ type Mutation {
   createUser(
     username: String!,
     password: String!,
-    firstName: String,
-    lastName: String,
-  ): ID!
+    firstName: String!,
+    lastName: String!,
+  ): User
 }
 `;
 
