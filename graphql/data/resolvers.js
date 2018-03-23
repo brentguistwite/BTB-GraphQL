@@ -6,7 +6,20 @@ mongoose.Promise = global.Promise;
 
 const resolvers = {
   Query: {
-    user: (parent, args, context, info) => {
+    user: async (parent, args, context, info) => {
+      try {
+        // const userData = await User.findById(args.id);
+        // console.log("USERDATA",userData)
+        // const parsedQuestions = JSON.parse(userData.questions);
+        // console.log(parsedQuestions.head.value);
+        // return parsedQuestions;
+        return await User.findById(args.id);
+      }
+
+      catch(e) {
+        console.error(e);
+      }
+
     },
     allUsers: async (parent, args, context, info) => { 
       try {
@@ -67,13 +80,14 @@ const resolvers = {
         }
 
         const hashedPassword = await User.hashPassword(args.password);
-        return await User.create({
+        const newUser = await User.create({
           username: args.username,
           password: hashedPassword,
           firstName: args.firstName,
           lastName: args.lastName,
           questions: JSON.stringify(baseList),
         });
+        return newUser.serialize();
       }
 
       catch(e) {
