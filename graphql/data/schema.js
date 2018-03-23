@@ -14,6 +14,11 @@ type User {
 
 scalar JSON 
 
+type authPayload {
+  user: User!
+  authToken: String!
+}
+
 type Query {
   user(
     id:ID!
@@ -31,8 +36,14 @@ type Mutation {
     firstName: String!
     lastName: String!
     questions: JSON
-  ): User
+  ): authPayload
+
+  updateQuestionOrder(
+    id:ID!
+    answer: String!
+  ): Boolean!
 }
+
 `;
 
 const schema = makeExecutableSchema({ typeDefs, resolvers, });

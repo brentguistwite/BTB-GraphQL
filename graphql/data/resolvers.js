@@ -1,8 +1,12 @@
 import { User, } from './../db/user-model';
 import mongoose from 'mongoose';
 import GraphQLJSON from 'graphql-type-json';
+import jwt from 'jsonwebtoken';
+
+import config from './../config';
 import LinkedList from './../../algorithm/linked-list';
 import data from './../../questions/questions'
+import algorithm from './../../algorithm/spaced-rep-alg';
 mongoose.Promise = global.Promise;
 
 const resolvers = {
@@ -29,10 +33,19 @@ const resolvers = {
     },
   },
   Mutation: {
-    // updateQuestionOrder: async (parent, args, context, info) => {
-
-    // }
-    // ,
+    updateQuestionOrder: async (parent, args, context, info) => {
+      const currentUser = await User.findById(args.id);
+      // Turn object back to Linked List so we can access methods
+      const newQList = new LinkedList(currentUser.questions)
+      // Returns a bool
+      const feedback = algorithm(newQList, args.answer);
+      await User.update(
+        { _id: args.id, },
+        { questions: newQList, }
+      )
+      return feedback;
+    }
+    ,
     createUser: async (parent, args, context, info) => {
 
       // Our base set of questions/answers with default values
@@ -81,8 +94,14 @@ const resolvers = {
           lastName: args.lastName,
           questions: baseList,
         });
+        const user = newUser.serialize();
+        const authToken = jwt.sign({ userID:user.id, }, config.JWT_SECRET, {
+          subject: user.username,
+          expiresIn: config.JWT_EXPIRY,
+          algorithm: 'HS256',
+        });
         // Private directives
-        return newUser.serialize();
+        return {user, authToken}
       }
 
       catch(e) {
@@ -93,3 +112,19 @@ const resolvers = {
 };
 
 export default resolvers;
+
+
+// User
+//   .findById(req.params.id)
+//   .then((user) => {
+//     const list = new LinkedList(user.questions);
+//     feedback = algorithm(list, answer);
+//     return list;
+//   })
+//   .then((list) => {
+//     return User
+//       .update(
+        // { _id: req.params.id, },
+        // { questions: list, }
+//       );
+//   })
